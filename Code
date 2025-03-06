@@ -1,0 +1,63 @@
+class FieldLengthLimitException extends Exception {
+    public FieldLengthLimitException(String message) {
+        super(message);
+    }
+}
+
+class IncorrectSalaryException extends Exception {
+    public IncorrectSalaryException(String message) {
+        super(message);
+    }
+}
+
+class Employee {
+    private static int nextId = 1;
+    private int id;
+    private String name;
+    private String surname;
+    private double salary;
+    private static final int MAX_NAME_LENGTH = 20;
+
+    public Employee(String name, String surname, double salary) throws FieldLengthLimitException, IncorrectSalaryException {
+        this.id = nextId++;
+        setName(name);
+        setSurname(surname);
+        setSalary(salary);
+    }
+
+    public void setName(String name) throws FieldLengthLimitException {
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new FieldLengthLimitException("Ім'я занадто довге. Максимальна довжина: " + MAX_NAME_LENGTH);
+        }
+        this.name = name;
+    }
+
+    public void setSurname(String surname) throws FieldLengthLimitException {
+        if (surname.length() > MAX_NAME_LENGTH) {
+            throw new FieldLengthLimitException("Прізвище занадто довге. Максимальна довжина: " + MAX_NAME_LENGTH);
+        }
+        this.surname = surname;
+    }
+
+    public void setSalary(double salary) throws IncorrectSalaryException {
+        if (salary < 0) {
+            throw new IncorrectSalaryException("Заробітна плата не може бути від'ємною!");
+        }
+        this.salary = salary;
+    }
+
+   public void display(){
+    System.out.println("Employee{id=" + id + ", name='" + name + "', surname='" + surname + "', salary=" + salary + "}");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Employee emp1 = new Employee("Іван", "ПетровПетровПетровПетровПетров", 5000);
+            emp1.display();
+        } catch (FieldLengthLimitException | IncorrectSalaryException e) {
+            System.out.println("Помилка: " + e.getMessage());
+        }
+    }
+}
